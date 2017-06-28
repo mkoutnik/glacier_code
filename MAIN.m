@@ -72,7 +72,7 @@ figures_on       = 0;   % to set this =1 must have run once with all min_search=
                         % plots compare difference between two runs
 
                         
-steady_state_only = 1;  % Flag in loop below so that only run one 
+steady_state_only = 0;  % Flag in loop below so that only run one 
                         % calculation to get steady state values.
                         % *Also if want to run minimization search*
                         
@@ -366,10 +366,10 @@ save save_output.mat
 
 
 figure(10)   % SURFACE and BED
-plot(x_P/1000, B_P,'r')
+plot(x_P/1000, B_P,'r', 'linewidth', 2)
 hold on
-plot(x_P/1000, S_modern)
-plot(x_P/1000, S_P(1,:),'c--')
+plot(x_P/1000, S_modern, 'linewidth', 2)
+plot(x_P/1000, S_P(1,:),'c--', 'linewidth', 2)
 legend('Bed', 'Measured surface', 'Calculated surface', 'location', 'northwest')
 title('Surface and Bed topography')
 xlabel('Distance along flowband (km)')
@@ -389,7 +389,7 @@ title('Surface velocity')
 xlabel('Distance along flowband (km)')
 ylabel('Velocity (m/yr)')
 legend('Calculated velocity',  'MEaSUREs velocity', 'location', 'best')
-
+% 
 % figure(40)
 % plot(t_P/1000, S_at_GL-S_at_GL(end), 'b')
 % title('Change in elevation at grounding line since present day')
