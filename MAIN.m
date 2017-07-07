@@ -72,7 +72,7 @@ figures_on       = 0;   % to set this =1 must have run once with all min_search=
                         % plots compare difference between two runs
 
                         
-steady_state_only = 0;  % Flag in loop below so that only run one 
+steady_state_only = 1;  % Flag in loop below so that only run one 
                         % calculation to get steady state values.
                         % *Also if want to run minimization search*
                         
@@ -359,7 +359,7 @@ end  % if statement on steady_state
 
 
                  
-save save_output.mat
+save save_output_BDM.mat
 
 
 

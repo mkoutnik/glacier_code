@@ -29,7 +29,7 @@ global lower_resolution
 if ( (lower_resolution == 1) || (min_search_E == 1) || (min_search_bed == 1) || (min_search_fs == 1) )
     
     N_t = 201;
-    N_x = 567;
+    N_x = 67;
     
 else
     

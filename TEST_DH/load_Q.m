@@ -15,7 +15,7 @@ function  [ Q_0_in, ...
 % of the limited domain
 % ======================
 
- Q_0_in = -1.9822e+04;  % average flux at grounding line; 75 m/yr * 850 m at GL
+ Q_0_in = -75 * 750 * 4/5;  % average flux at grounding line; 75 m/yr * 750 m at GL
                            % use that ubar = (4/5) u_surface
 
  

@@ -1,4 +1,4 @@
-
+clear all
 % Transient glacier surface evolution model
 % -----------------------------------------
 % close all; 
@@ -62,6 +62,7 @@ global lower_resolution
 % ice-surface elevation and/or ice-surface velocity data
 % Need to set steady_state_only = 1 when running min search
 min_search_E     = 0;   
+
 min_search_fs    = 0;   
 min_search_bed   = 0;
 
@@ -79,8 +80,8 @@ steady_state_only = 1;  % Flag in loop below so that only run one
                         
 % Only one of these should be set = 1 at a time. Compare output from
 % different assumptions about ice flow
-deformation_only                           = 1;
-deformation_plus_sliding                   = 0; 
+deformation_only                           = 0;
+deformation_plus_sliding                   = 1; 
 sliding_only                               = 0; 
 deformation_sliding_lateraldrag            = 0; % not included yet!
 deformation_sliding_longstress             = 0; % not included yet!
@@ -109,7 +110,10 @@ prescribe_temperature    = 1;   % 1 = prescribe how temperature varies with dept
 load DH_accum_width_velocity.mat
 load DH_tributaries.mat
 
-
+if min_search_E == 1 || min_search_fs == 1 
+    measures_centerline_distance = Darwin_measures_centerline_distance;
+    measures_flowspeed = Darwin_measures_flowspeed;
+end
 
 % load all other globals:       
 % -----------------------
@@ -235,7 +239,7 @@ if (linear_temperature == 1)   % temperature varies linearly from surface to bed
 
 elseif (prescribe_temperature == 1)    
       
-   T_z_use = 273.15 - 25; % - 15;     
+   T_z_use = 273.15 - 15;     
    T_field_0 = repmat(T_z_use, N_x_mesh, N_z);   % replicate everywhere 
                                   
    % Or add in something more realistic?
@@ -359,7 +363,7 @@ end  % if statement on steady_state
 
 
                  
-save save_output.mat
+save save_output_DH.mat
 
 
 

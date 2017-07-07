@@ -32,7 +32,7 @@ addpath(DIRECTORY_data)
 % % From QGIS -- width
 load DH_accum_width_velocity.mat
 W_P = interp1(Darwin_width_x, Darwin_width_values, x_P);
-W_P = W_P/W_P(1);
+W_P = W_P./W_P(1);
 
 
 % % Values from min search
