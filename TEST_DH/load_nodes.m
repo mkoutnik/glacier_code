@@ -19,12 +19,12 @@ global lower_resolution
 %   x- positions of nodes (meters)
 %   ------------------------------
     
-     x_nodes = (0:500:1.42165e+05);
+     x_nodes = (0:500:1.41e+05);
  
    
 if ( (lower_resolution == 1) || (min_search_E == 1) || (min_search_bed == 1) || (min_search_fs == 1) )
       
-     x_nodes = (0:1000:1.42165e+05);
+     x_nodes = (0:1000:1.41e+05);
 
 end
      

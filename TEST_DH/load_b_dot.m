@@ -25,8 +25,8 @@ addpath(DIRECTORY_data)
 % From QGIS -- Accumulation_A vs. Accumulation_R
 load DH_accum_width_velocity.mat
 
-% b_dot_use = -1*interp1(Darwin_accumulation_A_centerline_distance, Darwin_accumulation_A, x_nodes);
-b_dot_use = -linspace(0.15, 0.05, length(x_nodes));
+b_dot_use = interp1(Darwin_accumulation_centerline_distance, Darwin_accumulation_A, x_nodes);
+% b_dot_use = -linspace(0.15, 0.05, length(x_nodes));
 %b_dot_use = interp1(accumulation_centerline_distance, accumulation_R, x_nodes);
 
   for ii = 1:N_t_nodes

@@ -73,8 +73,14 @@ plot(buffer.X, buffer.Y)
 plot(flowline(:,1), flowline(:,2), 'k', 'linewidth', 2)
 daspect([1 1 1])
 
-distance_along_centerline = [0; pdist2([flowline(1,1) flowline(1,2)], [flowline(2:end,1) flowline(2:end,2)])'];
+distance_vec = [0];
+for jj = 2:size(flowline,1)
+distance_temp= [pdist2([flowline(jj-1,1) flowline(jj-1,2)], [flowline(jj,1) flowline(jj,2)])'];
 
+distance_vec  = [distance_vec; distance_temp];
+end
+
+distance_along_centerline = cumsum(distance_vec);
 end
 
 

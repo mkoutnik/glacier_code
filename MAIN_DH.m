@@ -79,8 +79,8 @@ steady_state_only = 1;  % Flag in loop below so that only run one
                         
 % Only one of these should be set = 1 at a time. Compare output from
 % different assumptions about ice flow
-deformation_only                           = 0;
-deformation_plus_sliding                   = 1; 
+deformation_only                           = 1;
+deformation_plus_sliding                   = 0; 
 sliding_only                               = 0; 
 deformation_sliding_lateraldrag            = 0; % not included yet!
 deformation_sliding_longstress             = 0; % not included yet!
@@ -391,12 +391,12 @@ xlabel('Distance along flowband (km)')
 ylabel('Velocity (m/yr)')
 legend('Calculated velocity',  'MEaSUREs velocity', 'location', 'best')
 
-figure(40)
-plot(t_P/1000, S_at_GL-S_at_GL(end), 'b')
-title('Change in elevation at grounding line since present day')
-ylabel('Elevation (m)')
-xlabel('Time (kyr)')
-ylim([-5 800])
- 
+% figure(40)
+% plot(t_P/1000, S_at_GL-S_at_GL(end), 'b')
+% title('Change in elevation at grounding line since present day')
+% ylabel('Elevation (m)')
+% xlabel('Time (kyr)')
+% ylim([-5 800])
+%  
 
 
