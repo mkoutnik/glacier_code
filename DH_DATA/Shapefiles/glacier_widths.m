@@ -1,4 +1,4 @@
-function [Lnormal, Rnormal, width] = glacier_widths(flowline_path, buffer_path)
+function [width, distance_along_centerline] = glacier_widths(flowline_path, buffer_path)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 %flowline = Polar stereographic pairs of flowline coordinates, starting at
@@ -73,7 +73,7 @@ plot(buffer.X, buffer.Y)
 plot(flowline(:,1), flowline(:,2), 'k', 'linewidth', 2)
 daspect([1 1 1])
 
-
+distance_along_centerline = [0; pdist2([flowline(1,1) flowline(1,2)], [flowline(2:end,1) flowline(2:end,2)])'];
 
 end
 
