@@ -1,4 +1,4 @@
-function [Lnormal, Rnormal, width] = glacier_widths(flowline, buffer)
+function [Lnormal, Rnormal, width] = glacier_widths(flowline_path, buffer_path)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 %flowline = Polar stereographic pairs of flowline coordinates, starting at
@@ -7,9 +7,23 @@ function [Lnormal, Rnormal, width] = glacier_widths(flowline, buffer)
 %int = interval at which to calculate normals
 %buffer = the polygon of the glacier outline, made in qgis. use shaperead
 
-%Normal lies in the null space of the matrix A - B, where A and B are each
+%% get shapefiles into usable format. Buffer is fine the way it is.
+buffer = shaperead(buffer_path);
+
+flowline_struct = shaperead(flowline_path);
+flowline_struct.X = flowline_struct.X(1:end-1);
+flowline_struct.Y = flowline_struct.Y(1:end-1);
+
+flowx = linspace(flowline_struct.X(1), flowline_struct.X(end), 100);
+flowy = interp1(flowline_struct.X, flowline_struct.Y, flowx);
+flowline = [flowx; flowy]';
+
+
+
+%% Normal lies in the null space of the matrix A - B, where A and B are each
 %(x,y) pairs
-%calculate normals to left and right of start and end of flowline (looking upstream)
+%calculate normals to left and right of start and end of flowline (looking
+%upstream)
 temp_halfwidth = 5e4; %this just needs to be wider than any point along the flowline. 50 km is a good halfwidth
 
 Lnormal_start = flowline(1,:) + temp_halfwidth.*(null(flowline(2,:) - flowline(1,:)))';
@@ -55,7 +69,9 @@ for jj = 1:size(flowline,1)
     count = count+1;
 end
 
-
+plot(buffer.X, buffer.Y)
+plot(flowline(:,1), flowline(:,2), 'k', 'linewidth', 2)
+daspect([1 1 1])
 
 
 
