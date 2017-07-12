@@ -24,8 +24,16 @@ addpath(DIRECTORY_data)
 
 % From QGIS -- Accumulation_A vs. Accumulation_R
 load DH_accum_width_velocity.mat
+load DH_surf_bed.mat
 
-b_dot_use = -interp1(Darwin_accumulation_centerline_distance, Darwin_accumulation_A, x_nodes);
+%% if you want to calculate from a lapse rate similar to Bliss et al. (2011) for Taylor glacier 
+precip_at_sl = -0.35;
+lapse = 0.35/1500;
+
+Darwin_bdot_modern_lapse = precip_at_sl + lapse.*Darwin_modern_surface;
+
+b_dot_use = interp1(Darwin_centerline_distance, Darwin_bdot_modern_lapse, x_nodes);
+% b_dot_use = -interp1(Darwin_accumulation_centerline_distance, Darwin_accumulation_A, x_nodes);
 % b_dot_use = linspace(0,0, length(x_nodes));
 %b_dot_use = interp1(accumulation_centerline_distance, accumulation_R, x_nodes);
 
