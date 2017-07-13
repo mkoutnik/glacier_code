@@ -1,23 +1,24 @@
-function [width, distance_along_centerline] = glacier_widths(flowline_path, buffer_path)
-%UNTITLED Summary of this function goes here
-%   Detailed explanation goes here
+function [width, distance_along_centerline] = glacier_widths(flowline_path, buffer_path, nodes)
+%glacier_widths automatically measures widths of a polygon (glacier outline
+%shapefile) perpendicular to a flowline (also a shapefile)
+%  
 %flowline = Polar stereographic pairs of flowline coordinates, starting at
 %the glacier mouth. Use Qgis to make this, then use interp1 to densify.
 %Read into matlab with shaperead
-%int = interval at which to calculate normals
 %buffer = the polygon of the glacier outline, made in qgis. use shaperead
-
+%nodes = number of evenly-spaced points at which to measure width.
 %% get shapefiles into usable format. Buffer is fine the way it is.
+
+
 buffer = shaperead(buffer_path);
 
 flowline_struct = shaperead(flowline_path);
 flowline_struct.X = flowline_struct.X(1:end-1);
 flowline_struct.Y = flowline_struct.Y(1:end-1);
 
-flowx = linspace(flowline_struct.X(1), flowline_struct.X(end), 100);
+flowx = linspace(flowline_struct.X(1), flowline_struct.X(end), nodes);
 flowy = interp1(flowline_struct.X, flowline_struct.Y, flowx);
 flowline = [flowx; flowy]';
-
 
 
 %% Normal lies in the null space of the matrix A - B, where A and B are each
