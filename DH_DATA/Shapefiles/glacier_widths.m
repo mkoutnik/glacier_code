@@ -1,10 +1,10 @@
-function [width, distance_along_centerline] = glacier_widths(flowline_path, buffer_path, nodes)
+function [width, cross_sectional_area, distance_along_centerline] = glacier_widths(flowline_path, buffer_path, nodes)
 %glacier_widths automatically measures widths of a polygon (glacier outline
 %shapefile) perpendicular to a flowline (also a shapefile)
 %  
 %flowline = Polar stereographic pairs of flowline coordinates, starting at
 %the glacier mouth. Use Qgis to make this, then use interp1 to densify.
-%Read into matlab with shaperead
+%Read into matlab with shaperead 
 %buffer = the polygon of the glacier outline, made in qgis. use shaperead
 %nodes = number of evenly-spaced points at which to measure width.
 %% get shapefiles into usable format. Buffer is fine the way it is.
@@ -48,6 +48,8 @@ Rnormal = [Rnormal; Rnormal_end];
 
 %% Now find the points where these normal vectors intersect the buffer
 count = 1;
+cross_sectional_area = [];
+thickmap = 0; % initialize for figure handle in glacier_cross_sect_area.m
 for jj = 1:size(flowline,1)
   
     normalx = [Rnormal(jj,1), Lnormal(jj,1)];
@@ -67,6 +69,10 @@ for jj = 1:size(flowline,1)
     else
         width(count) = NaN;
     end
+    
+    [cross_section_temp, thickmap] = glacier_cross_sect_area(xx,yy, thickmap);
+    cross_sectional_area = [cross_sectional_area; cross_section_temp];
+    
     count = count+1;
 end
 
@@ -82,6 +88,7 @@ distance_vec  = [distance_vec; distance_temp];
 end
 
 distance_along_centerline = cumsum(distance_vec);
+
 end
 
 
