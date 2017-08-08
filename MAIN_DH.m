@@ -1,4 +1,4 @@
-clear all
+% clear all
 % Transient glacier surface evolution model
 % -----------------------------------------
 % close all; 
@@ -370,6 +370,7 @@ save save_output_DH.mat
 
 
 figure(10)   % SURFACE and BED
+subplot(2,1,1)
 plot(x_P/1000, B_P,'r', 'linewidth', 2)
 hold on
 plot(x_P/1000, S_modern, 'b', 'linewidth', 2)
@@ -378,6 +379,8 @@ legend('Bed', 'Measured surface', 'Calculated surface', 'location', 'northwest')
 title('Surface and Bed topography')
 xlabel('Distance along flowband (km)')
 ylabel('Elevation (m)')
+subplot(2,1,2)
+plot(x_P/1000, S_modern - S_P(1,:))
 
 figure(20)   % ACCUMULATION
 hold on
@@ -395,6 +398,7 @@ xlabel('Distance along flowband (km)')
 ylabel('Velocity (m/yr)')
 legend('Calculated velocity',  'MEaSUREs velocity', 'location', 'best')
 
+set(gca,'FontName', 'Times New Roman', 'Fontsize', 12)
 % figure(40)
 % plot(t_P/1000, S_at_GL-S_at_GL(end), 'b')
 % title('Change in elevation at grounding line since present day')

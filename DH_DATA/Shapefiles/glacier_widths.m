@@ -1,4 +1,4 @@
-function [width, cross_sectional_area, distance_along_centerline] = glacier_widths(flowline_path, buffer_path, nodes)
+function [width, cross_sectional_area, distance_along_centerline] = glacier_widths(flowline_path, buffer_path, nodes, thickpath, AMTpath)
 %glacier_widths automatically measures widths of a polygon (glacier outline
 %shapefile) perpendicular to a flowline (also a shapefile)
 %  
@@ -7,8 +7,11 @@ function [width, cross_sectional_area, distance_along_centerline] = glacier_widt
 %Read into matlab with shaperead 
 %buffer = the polygon of the glacier outline, made in qgis. use shaperead
 %nodes = number of evenly-spaced points at which to measure width.
+%thickpath is the path to the ascii dataset of ice thickness. I used
+%Mette's 1 km dataset, but you can use others for other glaciers
+%AMT path is the path to your Antarctic Mapping Toolbox
+addpath(AMTpath); %add Antarctic Mapping Toolbox to your path
 %% get shapefiles into usable format. Buffer is fine the way it is.
-
 
 buffer = shaperead(buffer_path);
 
@@ -50,6 +53,16 @@ Rnormal = [Rnormal; Rnormal_end];
 count = 1;
 cross_sectional_area = [];
 thickmap = 0; % initialize for figure handle in glacier_cross_sect_area.m
+
+% Read in ice thickness data
+[Data,RefMat]= arcgridread(thickpath);
+%create an xy grid on which to display the map
+[nrows,ncols,~]=size(Data);
+[row,col]=ndgrid(1:nrows,1:ncols);
+[ygrid,xgrid]=pix2latlon(RefMat,row,col);
+x = xgrid(1,:);
+y = ygrid(:,1)';
+
 for jj = 1:size(flowline,1)
   
     normalx = [Rnormal(jj,1), Lnormal(jj,1)];
@@ -70,7 +83,7 @@ for jj = 1:size(flowline,1)
         width(count) = NaN;
     end
     
-    [cross_section_temp, thickmap] = glacier_cross_sect_area(xx,yy, thickmap);
+    [cross_section_temp, thickmap] = glacier_cross_sect_area(x, y, xx,yy, Data, thickmap);
     cross_sectional_area = [cross_sectional_area; cross_section_temp];
     
     count = count+1;
