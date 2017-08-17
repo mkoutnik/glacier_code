@@ -32,10 +32,10 @@ lapse = 0.35/1500;
 
 Darwin_bdot_modern_lapse = precip_at_sl + lapse.*Darwin_modern_surface;
 
-b_dot_use = interp1(Darwin_centerline_distance, Darwin_bdot_modern_lapse, x_nodes);
+% b_dot_use = interp1(Darwin_centerline_distance, Darwin_bdot_modern_lapse, x_nodes);
 % b_dot_use = -interp1(Darwin_accumulation_centerline_distance, Darwin_accumulation_A, x_nodes);
 % b_dot_use = linspace(0,0, length(x_nodes));
-%b_dot_use = interp1(accumulation_centerline_distance, accumulation_R, x_nodes);
+b_dot_use = interp1(Darwin_accumulation_centerline_distance, Darwin_accumulation_LGM, x_nodes);
 
   for ii = 1:N_t_nodes
     b_dot_nodes(ii,:) = b_dot_use;
