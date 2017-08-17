@@ -1,4 +1,4 @@
-function  QQ = calc_flux_dyn( x, h, dS_dx, E, fs, W, A_T )
+function  QQ = calc_flux_dyn( x, h, dS_dx, E, fs, W, A_T, deformation_only, deformation_plus_sliding, sliding_only )
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  finds fluxes based on thickness h(x), slope dS_dx, 
 %    basal slip r atio, and temperature
@@ -8,7 +8,7 @@ function  QQ = calc_flux_dyn( x, h, dS_dx, E, fs, W, A_T )
 
 
 %  get depth-averaged velocities
-     u_bar = get_u_bar( x, h, dS_dx, E, fs, A_T );
+     u_bar = get_u_bar( x, h, dS_dx, E, fs, A_T, deformation_only, deformation_plus_sliding, sliding_only );
 %
 
 %   form flux

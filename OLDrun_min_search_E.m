@@ -1,6 +1,6 @@
 % run_min_search_E
 
-E_vec         = [ 0.5:0.5:10 ];
+E_vec         = [ 0.5:0.5:20 ];
 N_E           = length( E_vec );
 
 length_run    = length(x_P);

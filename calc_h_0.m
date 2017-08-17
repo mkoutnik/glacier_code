@@ -3,7 +3,9 @@
             dS_dx_edges ] = calc_h_0( x_P, x_w, x_e, dx_P, ...
                                       B_P, B_w, B_e, W_P, W_w, W_e, ...
                                       b_dot_edges, E_w, E_e, fs_w, fs_e, ...
-                                      Q_0_in, S_0_in, A_T_w, A_T_e )
+                                      Q_0_in, S_0_in, A_T_w, A_T_e, ...
+                                      flux_add_w, flux_add_e, ...
+                                      deformation_only, deformation_plus_sliding, sliding_only)
 
      
 %--------------------------------------------------------------------------
@@ -13,6 +15,7 @@
 % Detailed comments at the END of this file.
 %
 %--------------------------------------------------------------------------
+
 
 % edge values of accumulation rate
 % ================================
@@ -24,14 +27,14 @@
        N_x = length(x_P);
 
 %  set maximum number of allowable iterations with Newton's method
-       itmax = 50;
+       itmax = 5000;
         
 %  initialize residuals and thickness-change matrices for Newton's method 
        r_save  = NaN( itmax, N_x );
        dS_save = NaN( itmax, N_x );
 
 %  set tolerance test for final residuals
-       r_limit = 1e-4;
+       r_limit = 1e-8;
        
 %  set fractional thickness perturbation when evaluating 
 %  derivatives dr/d S_e
@@ -52,16 +55,17 @@
       slope_w(1) =  dSurf_0_dx( x_w(1), x_P, x_w, x_e, dx_P, ...
                                S_w(1), B_w, B_e, W_w, W_e, ...
                                E_w, E_e, fs_w, fs_e, b_dot_w, b_dot_e, ...
-                               Q_0_in, A_T_w, A_T_e );                        
+                               Q_0_in, A_T_w, A_T_e, flux_add_w, flux_add_e, ...
+                               deformation_only, deformation_plus_sliding, sliding_only);                        
 %
 
 %   Now get surface profile S_0( x_P ) consistent with numerical mesh 
 %   -----------------------------------------------------------------
 
   for i = 1:N_x
-           
+      
     %  extrapolate slope at x_w(i) to find S_0(i) at x_P(i) 
-        dx  = x_P(i) - x_w(i); 
+        dx  = (x_P(i) - x_w(i)); 
         S_0(i) = S_w(i) + slope_w(i) * dx;
     %
  
@@ -71,11 +75,12 @@
         slope_i = dSurf_0_dx( x_P(i), x_P, x_w, x_e, dx_P, ...
                                S_0(i), B_w, B_e, W_w, W_e, ...
                                E_w, E_e, fs_w, fs_e, b_dot_w, b_dot_e, ...
-                               Q_0_in, A_T_e, A_T_w );                        
+                               Q_0_in, A_T_e, A_T_w, flux_add_w, flux_add_e, ...
+                               deformation_only, deformation_plus_sliding, sliding_only);                        
 
     
     %  (b) extrapolate surface to x_e(i)
-        dx = x_e(i) - x_P(i);
+        dx = (x_e(i) - x_P(i));
         S_e_trial = S_0(i) + slope_i * dx;
   
     
@@ -102,7 +107,8 @@
           slope_e_a =  dSurf_0_dx( x_e(i), x_P, x_w, x_e, dx_P, ...
                                    S_e_trial, B_w, B_e, W_w, W_e, ...
                                    E_w, E_e, fs_w, fs_e, b_dot_w, b_dot_e, ...
-                                   Q_0_in, A_T_e, A_T_w );                        
+                                   Q_0_in, A_T_e, A_T_w, flux_add_w, flux_add_e, ...
+                                   deformation_only, deformation_plus_sliding, sliding_only);                        
 
   
      %  project back to x_P(i)
@@ -116,7 +122,8 @@
           slope_e_b =  dSurf_0_dx( x_e(i), x_P, x_w, x_e, dx_P, ...
                                (S_e_trial+dh), B_w, B_e, W_w, W_e, ...
                                E_w, E_e, fs_w, fs_e, b_dot_w, b_dot_e, ...
-                               Q_0_in, A_T_e, A_T_w );                        
+                               Q_0_in, A_T_e, A_T_w, flux_add_w, flux_add_e, ...
+                               deformation_only, deformation_plus_sliding, sliding_only);                        
 
 
      %  project back to x_P(i)
@@ -145,12 +152,13 @@
           
           itno = itno+1;
        
-%         if (itno == itmax)
-%             disp(' Hit maximum iterations in calc_h_0.m')
-%         end
+        if (itno == itmax)
+            disp(' Hit maximum iterations in calc_h_0.m')
+        end
           
       end   % while( (itno < itmax) & ...
        
+      
       
   end   %  for i = 1:N_x ...
 
@@ -160,6 +168,8 @@
 % =============
   h_0 = S_0 - B_P;
   
+  
+ 
 % surface slope
 % =============
  [ dS_dx_w, dS_dx_e ] = get_gradient_values( S_0, x_P, dx_P );

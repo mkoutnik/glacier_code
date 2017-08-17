@@ -1,22 +1,23 @@
 % run_min_search_bed
 
 
-bed_vec         = [ 500:100:4000 ];
+bed_vec         = [ 400:200:4000 ];
 N_bed           = length( bed_vec );
 
 length_run    = length(x_P);
-save_bed        = [];
+save_bed        = NaN * ones(1, N_bed);
 save_mismatch = NaN * ones(length_run, N_bed);
 
 B_P_orig = B_P;
 
-spliced_bed       = 151100;
+spliced_bed       = 151100;  % at this distance along flowband
 spliced_bed_index = find(x_P <= spliced_bed, 1, 'last');  % Give one more grid point?
 
 
-for xpos = length_run:-1:spliced_bed_index   % loop over unknown bed positions
+%for xpos = length_run:-1:spliced_bed_index   % loop over unknown bed positions
 %for xpos = spliced_bed_index:length_run 
-    
+for xpos = length_run:-1:1 
+
 disp(['Evaluating bed for x-position ',int2str(xpos), ' of total=',int2str(length_run)]);    
     
 RMS_mismatch = NaN * ones( 1, N_bed );
@@ -25,7 +26,7 @@ RMS_mismatch = NaN * ones( 1, N_bed );
 %  Loop over B_P
  for i_bed = 1:N_bed
 
-     % B_P     = B_P_orig; % RESET
+      B_P     = B_P_orig; % RESET
       bed_use = bed_vec(i_bed);
 
       B_P(xpos) = bed_use;
@@ -34,14 +35,15 @@ RMS_mismatch = NaN * ones( 1, N_bed );
       [B_w, B_e ] = get_edge_values_quadratic ...
                              ( B_P, x_P, x_w, x_e, dx_P, dx_w, dx_e );
 
- [ S_P(time,:), h_P(time,:), ...  
+   [ S_P(time,:), h_P(time,:), ...  
     dS_dx_P_xt(time,:),  ...
     dS_dx_edges_xt(time,:) ] = calc_h_0( x_P, x_w, x_e, dx_P, B_P, B_w, B_e, ...
                                          W_P, W_w, W_e, b_dot_edges(time,:), ...
                                          E_w, E_e, fs_w, fs_e, ...
                                          Q_0_in, S_at_GL(time), ...
                                          A_eff_edges_xt(time,1:end-1), ...
-                                         A_eff_edges_xt(time,2:end) );
+                                         A_eff_edges_xt(time,2:end), ...
+                                         flux_add_w, flux_add_e);
                                      
                          
 % edge values of ice thickness
@@ -84,8 +86,11 @@ RMS_mismatch = NaN * ones( 1, N_bed );
  %  residual = sqrt( mean( ( (abs(BDM_surface) - abs(S_P))/std_dev ).^2 ) );           
 
  % Surface velocity:
-   residual = sqrt( mean( ( (abs(BDM_velocity) - abs(surf_vel_estimate))/std_dev ).^2 ) );  
+  % residual = sqrt( mean( ( (abs(BDM_velocity) - abs(surf_vel_estimate))/std_dev ).^2 ) );  
         
+ % Only at xpos point?? 
+   residual = sqrt( mean( ( (abs(BDM_velocity(xpos) - abs(surf_vel_estimate(xpos))/std_dev ).^2 ) ) ) );
+   
    RMS_mismatch(i_bed) = residual;
    
                                    
@@ -94,8 +99,8 @@ RMS_mismatch = NaN * ones( 1, N_bed );
  
    index     = find( RMS_mismatch == min(min(RMS_mismatch) ) );
    RMS_best  = RMS_mismatch(index);
-   best_bed  = bed_vec(index);
-   save_bed  = [ save_bed best_bed ];    
+   best_bed  = bed_vec(index)
+   save_bed(xpos)  = best_bed;    
    save_mismatch(xpos, :) = RMS_mismatch;
 
 % set best bed:
@@ -105,8 +110,9 @@ end  % loop over xpositions
 
                  
 
-B_P_min = [B_P(1:spliced_bed_index-1) save_bed];
+% B_P_min = [B_P(1:spliced_bed_index-1) save_bed];
             
+B_P_min = save_bed;
 
 B_P = B_P_min;
 % recalculate values on the edges.
