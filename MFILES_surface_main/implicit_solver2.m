@@ -12,7 +12,8 @@ function [ h_P_t, h_w_t, h_e_t, ...
                                                  Q_out_L_SS, Q_out_R_SS, ...
                                                  Q_external_L, Q_external_R, ...
                                                  S_at_GL, t_P, ...
-                                                 dt_P, i_time)
+                                                 dt_P, i_time, ...
+                                                 deformation_only, deformation_plus_sliding, sliding_only)
 
                                                           
 % -------------------------------------------------------------------------
@@ -38,9 +39,9 @@ global itnum_max
 global res_stop2
 global calculate_residual
 
-global deformation_only deformation_plus_sliding sliding_only ...
-       deformation_sliding_lateraldrag deformation_sliding_longstress ...
-       deformation_sliding_lateraldrag_longstress
+% global deformation_only deformation_plus_sliding sliding_only ...
+%        deformation_sliding_lateraldrag deformation_sliding_longstress ...
+%        deformation_sliding_lateraldrag_longstress
    
 
 % Initialize values
@@ -113,7 +114,8 @@ if (deformation_only == 1)
                                   b_dot_P, b_dot_edges, ...
                                   S_at_GL, N_x, Q_out_R_SS, ...
                                   Q_external_L, Q_external_R, ...
-                                  E_w, E_e, fs_w, fs_e );
+                                  E_w, E_e, fs_w, fs_e, ...
+                                  deformation_only, deformation_plus_sliding, sliding_only);
                               
 elseif (deformation_plus_sliding == 1)
               
@@ -130,7 +132,9 @@ elseif (deformation_plus_sliding == 1)
                                   b_dot_P, b_dot_edges, ...
                                   S_at_GL, N_x, Q_out_R_SS, ...
                                   Q_external_L, Q_external_R, ...
-                                  E_w, E_e, fs_w, fs_e );
+                                  E_w, E_e, fs_w, fs_e, ...
+                                  deformation_only, deformation_plus_sliding, sliding_only);
+   % Should dS/dx be negative here??
                               
 elseif (sliding_only == 1)                              
         
@@ -147,13 +151,14 @@ elseif (sliding_only == 1)
                                   b_dot_P, b_dot_edges, ...
                                   S_at_GL, N_x, Q_out_R_SS, ...
                                   Q_external_L, Q_external_R, ...
-                                  E_w, E_e, fs_w, fs_e );
+                                  E_w, E_e, fs_w, fs_e, ...
+                                  deformation_only, deformation_plus_sliding, sliding_only);
     
     
-elseif (deformation_sliding_lateraldrag == 1)
-    
-    
-elseif (deformation_sliding_long_stress == 1)
+% elseif (deformation_sliding_lateraldrag == 1)
+%     
+%     
+% elseif (deformation_sliding_long_stress == 1)
     
 
 end
@@ -213,17 +218,40 @@ end
  
 % update dynamic flux:
 % ====================
-  K_w_t = flow_constant_t(1:end-1) .* W_w .* (h_w_t.^(n+2)) ...
+if (deformation_only == 1)
+    
+    K_w_t = E_w .* flow_constant_t(1:end-1) .* W_w .* (h_w_t.^(n+2)) ...
             .* ( (dS_dx_w_t.^2).^( (n-1)/2 ) );
-  K_e_t = flow_constant_t(2:end) .* W_e .* (h_e_t.^(n+2)) ...
+    K_e_t = E_e .* flow_constant_t(2:end) .* W_e .* (h_e_t.^(n+2)) ...
             .* ( (dS_dx_e_t.^2).^( (n-1)/2 ) );
+        
+elseif (sliding_only == 1)
+    
+    K_w_t = ( ( (fs_w .* ((rho_ice*g)^n .* h_w_t.^(n) .* W_w)) ) ...
+            .* ( (dS_dx_w_t.^2).^( (n-1)/2 ) ) );    
+
+    K_e_t = ( ( (fs_e .* ((rho_ice*g)^n .* h_e_t.^(n) .* W_e)) ) ...
+            .* ( (dS_dx_e_t.^2).^( (n-1)/2 ) ) );           
+    
+elseif (deformation_plus_sliding == 1)
+    
+    K_w_t = ( (( E_w .* flow_constant(1:end-1) .* W_w .* (h_w_t.^(n+2))) ...
+                + (fs_w .* ((rho_ice*g)^n .* h_w_t.^(n) .* W_w)) ) ...
+            .* ( (dS_dx_w_t.^2).^( (n-1)/2 ) ) );    
+
+    K_e_t = ( (( E_e .* flow_constant(1:end-1) .* W_e .* (h_e_t.^(n+2))) ...
+                + (fs_e .* ((rho_ice*g)^n .* h_e_t.^(n) .* W_e)) ) ...
+            .* ( (dS_dx_e_t.^2).^( (n-1)/2 ) ) );        
+        
+end
+        
   Q_w_t    = - sign(dS_dx_w_t) .* K_w_t .* abs(dS_dx_w_t);   % flux at western edges at time=time-1
   Q_e_t    = - sign(dS_dx_e_t) .* K_e_t .* abs(dS_dx_e_t);   % flux at eastern edges at time=time-1
  
   
   flux_edges_dyn_t = [Q_w_t(1) Q_e_t];
    
- 
+
  
  
  

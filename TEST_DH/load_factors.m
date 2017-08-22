@@ -31,9 +31,12 @@ global s_per_year
 % Deformation enhancement factor:
 % -------------------------------
    E_P    =  1 * ones( size(x_P) );  % Set equal to one there is no enhancement
-                                 % Scaling factor that has no units
-
+                                     % Scaling factor that has no units
+                                     
+%    index_50km = find(x_P<=50000, 1, 'last');                                  
+%    E_P(1:index_50km) = 0;
                                  
+                     
 % % Values from min search
 % % ======================
 % disp('Using best min search factor for E!')
@@ -48,10 +51,12 @@ global s_per_year
 % ---------------
 % Make sure in units Pa^3 m^2 yr^-1
 
- fs_P = (5.7e-20 * s_per_year) * ones(size(x_P));  % Budd et al. (1979) but check other values?
+  % fs_P = (5.7e-20 * s_per_year) * ones(size(x_P));  % Budd et al. (1979) but check other values?
  
-%    fs_P = 1e-10 * ones(size(x_P)); 
+    fs_P = 1e-11 * ones(size(x_P)); 
    
+  %  fs_P(1:index_50km) = 1e-11;
+    
 
   [fs_w, fs_e ] = get_edge_values_quadratic ( fs_P, x_P, x_w, x_e, dx_P, dx_w, dx_e );
 

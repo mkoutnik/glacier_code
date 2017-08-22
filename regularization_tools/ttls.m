@@ -7,7 +7,6 @@ function [x_k,rho,eta] = ttls(V1,k,s1)
 %    x_k = - V1(1:n,k+1:n+1)*pinv(V1(n+1,k+1:n+1))
 % where V1 is the right singular matrix in the SVD of the matrix
 %    [A,b] = U1*diag(s1)*V1' .
-% V1 and s1 must be computed via [U1,s1,V1] = csvd([A,b],'full').
 %
 % If k is a vector, then x_k is a matrix such that
 %    x_k = [ x_k(1), x_k(2), ... ] .
@@ -21,7 +20,7 @@ function [x_k,rho,eta] = ttls(V1,k,s1)
 % "Regularization by truncated total least squares", SIAM J. Sci. Comput.
 % 18 (1997), 1223-1241.
 
-% Per Christian Hansen, DTU Compute, 03/18/93.
+% Per Christian Hansen, IMM, 03/18/93.
 
 % Initialization.
 [n1,m1] = size(V1); n = n1-1;

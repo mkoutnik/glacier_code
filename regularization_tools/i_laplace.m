@@ -39,8 +39,8 @@ t = diag(2*(1:n)-1) - diag((1:n-1),1) - diag((1:n-1),-1);
 v = abs(Q(1,indx)); clear Q
 nz = find(v~=0);
 
-% Set up the coefficient matrix A.  Due to limitations caused
-% by finite-precision arithmetic, A has zero columns if n > 195.
+% Set up the coefficient matrix A.  Due to limitations cause
+% by finite-precision arithmetic, A has zero columns of n > 195
 A = zeros(n,n);
 for i=1:n
   for j=nz

@@ -1,18 +1,11 @@
 function g = lcfun(lambda,s,beta,xi,fifth)
 
 % Auxiliary routine for l_corner; computes the NEGATIVE of the curvature.
-% Note: lambda may be a vector.  PCH, DTU Compute, Jan. 31, 2015.
+% Note: lambda may be a vector.  PCH, IMM, Jan. 4, 2008.
 
 % Initialization.
 phi = zeros(size(lambda)); dphi = phi; psi = phi; dpsi = phi;
 eta = phi; rho = phi;
-if length(beta) > length(s)  % A possible least squares residual.
-    LS = true;
-    rhoLS2 = beta(end)^2;
-    beta = beta(1:end-1);
-else
-    LS = false;
-end
 
 % Compute some intermediate quantities.
 for i = 1:length(lambda)
@@ -30,9 +23,6 @@ for i = 1:length(lambda)
   psi(i)  = sum(cf.*f1.*abs(beta).^2);
   dphi(i) = sum((f1.^2 + f.*f2).*abs(xi).^2);
   dpsi(i) = sum((-f1.^2 + cf.*f2).*abs(beta).^2);
-end
-if LS  % Take care of a possible least squares residual.
-    rho = sqrt(rho.^2 + rhoLS2);
 end
 
 % Now compute the first and second derivatives of eta and rho

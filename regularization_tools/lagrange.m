@@ -7,15 +7,14 @@ function [La,dLa,lambda0] = lagrange(U,s,b,more)
 % Plots the Lagrange function
 %    La(lambda) = || A x - b ||^2 + lambda^2*|| L x ||^2
 % and its first derivative dLa = dLa/dlambda versus lambda.
-% Here, x is the Tikhonov regularized solution.  U and s, or U and sm,
-% must be computed by the functions csvd and cgsvd, respectively.
+% Here, x is the Tikhonov regularized solution.
 %
 % If nargin = 4, || A x - b || and || L x || are also plotted.
 %
 % Returns La, dLa, and the value lambda0 of lambda for which
 % dLa has its minimum.
 
-% Per Christian Hansen, DTU Compute, Feb. 21, 2001.
+% Per Christian Hansen, IMM, Feb. 21, 2001.
 
 % Set default number of points.
 npoints = 200;

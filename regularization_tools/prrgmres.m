@@ -1,7 +1,7 @@
 function [X,rho,eta] = prrgmres(A,L,N,b,k)
 %PRRGMRES Preconditioned RRGMRES algorithm for square inconsistent systems
 %
-% [X,rho,eta] = prrgmres(A,L,N,b,k)
+% [X,rho,eta] = rrgmres(A,L,N,b,k)
 %
 % PRRGMRES applies smoothing-norm preconditioning to the RRGMRES method,
 % which is a variant of RRGMRES for square linear systems A x = b, with  

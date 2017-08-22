@@ -5,24 +5,22 @@ function f = fil_fac(s,reg_param,method,s1,V1)
 % f = fil_fac(sm,reg_param,method)  ,  sm = [sigma,mu]
 % f = fil_fac(s,k,'ttls',s1,V1)
 %
-% Computes all the filter factors corresponding to the singular values in s
-% (must be computed by the function csvd) and the regularization parameter
+% Computes all the filter factors corresponding to the
+% singular values in s and the regularization parameter
 % reg_param, for the following methods:
 %    method = 'dsvd' : damped SVD or GSVD
 %    method = 'tsvd' : truncated SVD or GSVD
 %    method = 'Tikh' : Tikhonov regularization
 %    method = 'ttls' : truncated TLS.
-% If sm = [sigma,mu] is specified (must be computed by the function cgsvd),
-% then the filter factors for the corresponding generalized methods are
-% computed.
+% If sm = [sigma,mu] is specified, then the filter factors
+% for the corresponding generalized methods are computed.
 %
-% If method = 'ttls' then the singular values s1 and the right singular
-% matrix V1 of [A,b] must also be supplied, as computed by
-% [U1,s1,V1] = csvd([A,b],'full').
+% If method = 'ttls' then the singular values s1 and the
+% right singular matrix V1 of [A,b] must also be supplied.
 %
 % If method is not specified, 'Tikh' is default.
 
-% Per Christian Hansen, DTU Compute, 12/29/97.
+% Per Christian Hansen, IMM, 12/29/97.
 
 % Initialization.
 [p,ps] = size(s); lr = length(reg_param);

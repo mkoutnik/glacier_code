@@ -12,20 +12,24 @@ function [ x_nodes, t_nodes ] = load_nodes
 %---------------------------------------------------------------
 
 
-global min_search_E min_search_fs min_search_bed
+global min_search_E min_search_fs min_search_bed min_search_E_and_fs
 global lower_resolution
 
 
 %   x- positions of nodes (meters)
 %   ------------------------------
     
-     x_nodes = linspace(10e3,1.51e5, 567);
+ %    x_nodes = linspace(10e3,1.51e5, 567);
  
-   
-if ( (lower_resolution == 1) || (min_search_E == 1) || (min_search_bed == 1) || (min_search_fs == 1) )
+      x_nodes = (10000:1000:151000);
+ 
       
-     x_nodes = linspace(10e3,1.51e5, 67);
+if ( (lower_resolution == 1) || (min_search_E == 1) || (min_search_bed == 1) || (min_search_fs == 1) || (min_search_E_and_fs) )
+      
+  %   x_nodes = linspace(10e3,1.51e5, 67);
+      x_nodes = (10000:2000:151000);
 
+    
 end
      
      

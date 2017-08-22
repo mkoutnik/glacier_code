@@ -9,14 +9,13 @@ function [x_k,rho,eta] = tgsvd(U,sm,X,b,k)
 %            [ 0              0             eye(n-p) ]
 % If k is a vector, then x_k is a matrix such that
 %    x_k = [ x_k(1), x_k(2), ... ] .
-% U, sm, and X must be computed by the cgsvd function.
 %
 % The solution seminorm and the residual norm are returned in eta and rho.
 
 % Reference: P. C. Hansen, "Regularization, GSVD and truncated GSVD",
 % BIT 29 (1989), 491-504.
 
-% Per Christian Hansen, DTU Compute, Feb. 24, 2008.
+% Per Christian Hansen, IMM, Feb. 24, 2008.
 
 % Initialization
 m = size(U,1);

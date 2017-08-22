@@ -22,7 +22,7 @@ function [X,rho,eta,F] = lsqr_b(A,b,k,reorth,s)
 % sparse linear equations and sparse least squares", ACM Trans.
 % Math. Software 8 (1982), 43-71.
 
-% Per Christian Hansen, IMM, August 13, 2001.
+% Per Christian Hansen, IMM, April 8, 2001.
 
 % The fudge threshold is used to prevent filter factors from exploding.
 fudge_thr = 1e-4;
@@ -35,7 +35,7 @@ if (nargout==4 & nargin<5), error('Too few input arguments'), end
 if (reorth==0)
   UV = 0;
 elseif (reorth==1)
-  U = zeros(m,k+1); V = zeros(n,k+1); UV = 1;
+  U = zeros(m,k); V = zeros(n,k); UV = 1;
   if (k>=n), error('No. of iterations must satisfy k < n'), end
 else
   error('Illegal reorth')
@@ -54,7 +54,7 @@ end
 v = zeros(n,1); x = v; beta = norm(b);
 if (beta==0), error('Right-hand side must be nonzero'), end
 u = b/beta; if (UV), U(:,1) = u; end
-r = A'*u; alpha = norm(r);
+r = (u'*A)'; alpha = norm(r);   % A'*u;
 v = r/alpha; if (UV), V(:,1) = v; end
 phi_bar = beta; rho_bar = alpha; w = v;
 if (nargin==5), Fv = s/(alpha*beta); Fw = Fv; end

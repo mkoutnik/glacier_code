@@ -7,11 +7,9 @@ function [x_alpha,lambda] = lsqi(U,s,V,b,alpha,x_0)
 % Least squares minimization with a quadratic inequality constraint:
 %    min || A x - b ||   subject to   || x - x_0 ||     <= alpha
 %    min || A x - b ||   subject to   || L (x - x_0) || <= alpha
-% where x_0 is an initial guess of the solution, and alpha is a positive
-% constant.  Requires either the compact SVD of A saved as U, s, and V
-% (must be computed by the csvd function), or part of the GSVD of (A,L)
-% saved as U, sm, and X (must be computed by the cgsvd function).
-%
+% where x_0 is an initial guess of the solution, and alpha is a
+% positive constant.  Requires either the compact SVD of A saved as
+% U, s, and V, or part of the GSVD of (A,L) saved as U, sm, and X.
 % The regularization parameter lambda is also returned.
 %
 % If alpha is a vector, then x_alpha is a matrix such that
@@ -26,7 +24,7 @@ function [x_alpha,lambda] = lsqi(U,s,V,b,alpha,x_0)
 % Key point: the initial lambda is almost unaffected by x_0 because
 % || x_unreg || >> || x_0 ||.
 
-% Per Christian Hansen, DTU Compute, August 6, 2007.
+% Per Christian Hansen, IMM, August 6, 2007.
 
 % Initialization.
 m = size(U,1); n = size(V,1); [p,ps] = size(s);

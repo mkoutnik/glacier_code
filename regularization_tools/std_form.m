@@ -9,16 +9,15 @@ function [A_s,b_s,L_p,K,M] = std_form(A,L,b,W)
 % into one in standard form
 %    min { || A_s x_s - b_s ||^2 + lambda^2 || x_s ||^2 } .
 %
-% Two methods are available.  In both methods, the regularized solution to
-% the original problem can be written as
+% Two methods are available.  In both methods, the regularized
+% solution to the original problem can be written as
 %    x = L_p*x_s + d
 % where L_p and d depend on the method as follows:
 %    method = 1: L_p = pseudoinverse of L, d  = K*M*(b - A*L_p*x_s)
 %    method = 2: L_p = A-weighted pseudoinverse of L, d = x_0.
-% The matrix W holds a basis for the null space of L.
 %
-% The transformation from x_s back to x can be carried out by means of the
-% subroutine gen_form.
+% The transformation from x_s back to x can be carried out by means
+% of the subroutine gen_form.
 
 % Reference: P. C. Hansen, "Rank-Deficient and Discrete Ill-PosedProblems.
 % Numerical Aspects of Linear Inversion", SIAM, Philadelphia, 1997.

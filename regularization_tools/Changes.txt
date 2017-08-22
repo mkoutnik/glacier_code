@@ -203,23 +203,4 @@ Fixed bugs in gcvfun and tgsvd.
 03/09/08:
 Renamed ilaplace to i_laplace (to avoid name overlap with the
    Symbolic Math Toolbox).
-Added output argument W to cgsvd. 
- 
---------------------------------------------------------------------- 
-|      Changes after Regu Tools 4.0 has appeared in NumerAlgo.      | 
---------------------------------------------------------------------- 
- 
-08/22/09: 
-Fixed bug in cgsvd (m > n and p > n).
-
-04/16/11:
-Changed art to run faster (by replacing A with its transpose).
-
-08/13/11:
-Fixed minor preallocation bug in lsqr_b.
-
-09/02/11:
-Added errors messages to corner.
-
-01/31/11:
-Fixed a bug in lcfun, which also required a change in l_corner.
+Added output argument W to cgsvd.

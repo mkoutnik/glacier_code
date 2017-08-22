@@ -8,12 +8,11 @@ function [x_lambda,rho,eta] = dsvd(U,s,V,b,lambda)
 %    x_lambda = V*inv(diag(s + lambda))*U'*b .
 % If lambda is a vector, then x_lambda is a matrix such that
 %    x_lambda = [ x_lambda(1), x_lambda(2), ... ] .
-% U, s, and V must be computed by the csvd function.
 %
-% If sm and X are specified, then the damped GSVD solution is computed:
+% If sm and X are specified, then the damped GSVD solution:
 %    x_lambda = X*[ inv(diag(sigma + lambda*mu)) 0 ]*U'*b
 %                 [            0                 I ]
-% U, sm, and X must be computed by the cgsvd function.
+% is computed.
 %
 % The solution norm (standard-form case) or seminorm (general-form
 % case) and the residual norm are returned in eta and rho.
@@ -23,7 +22,7 @@ function [x_lambda,rho,eta] = dsvd(U,s,V,b,lambda)
 % Phys. 14 (1974), 319-340.
 % The extension to GSVD is by P. C. Hansen.
 
-% Per Christian Hansen, DTU Compute, April 14, 2003.
+% Per Christian Hansen, IMM, April 14, 2003.
 
 % Initialization.
 if (min(lambda)<0)

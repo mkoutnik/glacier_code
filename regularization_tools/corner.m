@@ -34,16 +34,10 @@ function [k_corner,info] = corner(rho,eta,fig)
 % pruning algorithm for the discrete L-curve criterion," J. Comp. Appl.
 % Math., 198 (2007), 483-492.
   
-% Per Christian Hansen and Toke Koldborg Jensen, DTU Compute, DTU;
-% Giuseppe Rodriguez, University of Cagliari, Italy; Sept. 2, 2011.
+% Per Christian Hansen and Toke Koldborg Jensen, IMM, DTU;
+% Giuseppe Rodriguez, University of Cagliari, Italy; March 22, 2006.
 
 % Initialization of data
-if length(rho)~=length(eta)
-    error('Vectors rho and eta must have the same length')
-end
-if length(rho)<3
-    error('Vectors rho and eta must have at least 3 elements')
-end
 rho = rho(:);       % Make rho and eta column vectors.
 eta = eta(:);
 

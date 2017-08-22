@@ -9,15 +9,14 @@ function [reg_min,dist,reg_param] = ncp(U,s,b,method)
 %    method = 'Tikh' : Tikhonov regularization
 %    method = 'tsvd' : truncated SVD or GSVD
 %    method = 'dsvd' : damped SVD or GSVD
-% If method is not specified, 'Tikh' is default.  U and s, or U and sm,
-% must be computed by the functions csvd and cgsvd, respectively.
+% If method is not specified, 'Tikh' is default.
 %
 % The NCP closest to a straight line is identified and the corresponding
 % regularization parameter reg_min is returned.  Moreover, dist holds the
 % distances to the straight line, and reg_param are the corresponding
 % regularization parameters.
 
-% Per Christian Hansen, DTU Compute, Jan. 4, 2008.
+% Per Christian Hansen, IMM, Jan. 4, 2008.
 
 % Reference: P. C. Hansen, M. Kilmer & R. H. Kjeldsen, "Exploiting
 % residual information in the parameter choice for discrete ill-posed

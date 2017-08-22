@@ -8,13 +8,12 @@ function [reg_min,Q,reg_param] = quasiopt(U,s,b,method)
 %    method = 'Tikh' : Tikhonov regularization   (solid line )
 %    method = 'tsvd' : truncated SVD or GSVD     (o markers  )
 %    method = 'dsvd' : damped SVD or GSVD        (dotted line)
-% If no method is specified, 'Tikh' is default.  U and s, or U and sm,
-% must be computed by the functions csvd and cgsvd, respectively.
+% If no method is specified, 'Tikh' is default.
 %
 % If any output arguments are specified, then the minimum of Q is
 % identified and the corresponding reg. parameter reg_min is returned.
 
-% Per Christian Hansen, DTU Compute, Feb. 21, 2001.
+% Per Christian Hansen, IMM, Feb. 21, 2001.
 
 % Set defaults.
 npoints = 200;  % Number of points for 'Tikh' and 'dsvd'.

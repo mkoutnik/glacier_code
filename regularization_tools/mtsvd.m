@@ -11,7 +11,6 @@ function [x_k,rho,eta] = mtsvd(U,s,V,b,k,L)
 % and xi_0 is chosen so as to minimize the seminorm || L x_k ||.
 % This leads to choosing xi_0 as follows:
 %    xi_0 = -pinv(L*V(:,k+1:n))*L*V(:,1:k)*xi_k .
-% U, s, and V must be computed by the csvd function.
 %
 % The truncation parameter must satisfy k > n-p.
 %

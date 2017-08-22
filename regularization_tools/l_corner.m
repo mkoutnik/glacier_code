@@ -26,10 +26,7 @@ function [reg_c,rho_c,eta_c] = l_corner(rho,eta,reg_param,U,s,b,method,M)
 % An eighth argument M specifies an upper bound for eta, below which
 % the corner should be found.
 
-% Per Christian Hansen, DTU Compute, January 31, 2015.
-
-% Ensure that rho and eta are column vectors.
-rho = rho(:); eta = eta(:);
+% Per Christian Hansen, IMM, July 26, 2007.
 
 % Set default regularization method.
 if (nargin <= 3)
@@ -58,15 +55,13 @@ if (length(rho) < order)
 end
 if (nargin > 3)
   [p,ps] = size(s); [m,n] = size(U);
-  beta = U'*b; b0 = b - U*beta;
+  beta = U'*b;
+  if (m>n), b0 = b - U*beta; end
   if (ps==2)
     s = s(p:-1:1,1)./s(p:-1:1,2);
     beta = beta(p:-1:1);
   end
   xi = beta./s;
-  if (m>n)  % Take of the least-squares residual.
-      beta = [beta;norm(b0)];
-  end
 end
 
 % Restrict the analysis of the L-curve according to M (if specified).
@@ -75,7 +70,7 @@ if (nargin==8)
   rho = rho(index); eta = eta(index); reg_param = reg_param(index);
 end
 
-if (strncmp(method,'Tikh',4) || strncmp(method,'tikh',4))
+if (strncmp(method,'Tikh',4) | strncmp(method,'tikh',4))
 
   % The L-curve is differentiable; computation of curvature in
   % log-log scale is easy.
@@ -85,7 +80,7 @@ if (strncmp(method,'Tikh',4) || strncmp(method,'tikh',4))
 
   % Locate the corner.  If the curvature is negative everywhere,
   % then define the leftmost point of the L-curve as the corner.
-  [~,gi] = min(g);
+  [gmin,gi] = min(g);
   reg_c = fminbnd('lcfun',...
     reg_param(min(gi+1,length(g))),reg_param(max(gi-1,1)),...
     optimset('Display','off'),s,beta,xi); % Minimizer.
@@ -97,16 +92,16 @@ if (strncmp(method,'Tikh',4) || strncmp(method,'tikh',4))
   else
     f = (s.^2)./(s.^2 + reg_c^2);
     eta_c = norm(f.*xi);
-    rho_c = norm((1-f).*beta(1:length(f)));
+    rho_c = norm((1-f).*beta);
     if (m>n), rho_c = sqrt(rho_c^2 + norm(b0)^2); end
   end
 
-elseif (strncmp(method,'tsvd',4) || strncmp(method,'tgsv',4) || ...
-        strncmp(method,'mtsv',4) || strncmp(method,'none',4))
+elseif (strncmp(method,'tsvd',4) | strncmp(method,'tgsv',4) | ...
+        strncmp(method,'mtsv',4) | strncmp(method,'none',4))
 
   % Use the adaptive pruning algorithm to find the corner, if the
   % Spline Toolbox is not available.
-  if ~exist('splines','dir') || alwayscorner
+  if ~exist('splines','dir') | alwayscorner
     %error('The Spline Toolbox in not available so l_corner cannot be used')
     reg_c = corner(rho,eta);
     rho_c = rho(reg_c);
@@ -114,7 +109,7 @@ elseif (strncmp(method,'tsvd',4) || strncmp(method,'tgsv',4) || ...
     return
   end
 
-  % Otherwise use local smoothing followed by fitting a 2-D spline curve
+  % Othersise use local smoothing followed by fitting a 2-D spline curve
   % to the smoothed discrete L-curve. Restrict the analysis of the L-curve
   % according to s_thr.
   if (nargin > 3)
@@ -173,15 +168,15 @@ elseif (strncmp(method,'tsvd',4) || strncmp(method,'tgsv',4) || ...
   else
     index = find(lrho < x_corner & leta < y_corner);
     if ~isempty(index)
-      [~,rpi] = min((lrho(index)-x_corner).^2 + (leta(index)-y_corner).^2);
+      [dummy,rpi] = min((lrho(index)-x_corner).^2 + (leta(index)-y_corner).^2);
       rpi = index(rpi);
     else
-      [~,rpi] = min((lrho-x_corner).^2 + (leta-y_corner).^2);
+      [dummy,rpi] = min((lrho-x_corner).^2 + (leta-y_corner).^2);
     end
     reg_c = reg_param(rpi); rho_c = rho(rpi); eta_c = eta(rpi);
   end
 
-elseif (strncmp(method,'dsvd',4) || strncmp(method,'dgsv',4))
+elseif (strncmp(method,'dsvd',4) | strncmp(method,'dgsv',4))
 
   % The L-curve is differentiable; computation of curvature in
   % log-log scale is easy.
@@ -191,7 +186,7 @@ elseif (strncmp(method,'dsvd',4) || strncmp(method,'dgsv',4))
 
   % Locate the corner.  If the curvature is negative everywhere,
   % then define the leftmost point of the L-curve as the corner.
-  [~,gi] = min(g);
+  [gmin,gi] = min(g);
   reg_c = fminbnd('lcfun',...
     reg_param(min(gi+1,length(g))),reg_param(max(gi-1,1)),...
     optimset('Display','off'),s,beta,xi,1); % Minimizer.
@@ -203,7 +198,7 @@ elseif (strncmp(method,'dsvd',4) || strncmp(method,'dgsv',4))
   else
     f = s./(s + reg_c);
     eta_c = norm(f.*xi);
-    rho_c = norm((1-f).*beta(1:length(f)));
+    rho_c = norm((1-f).*beta);
     if (m>n), rho_c = sqrt(rho_c^2 + norm(b0)^2); end
   end
 

@@ -10,7 +10,7 @@ function [X,rho,eta] = art(A,b,k)
 % Reference: F. Natterer and F. Wübbeling, Mathematical Methods
 % in Image Reconstruction, SIAM, Philadelphia, 2001; Sect. 5.3.1.
 
-% Per Christian Hansen, IMM, APr. 16, 2011.
+% Per Christian Hansen, IMM, Dec. 6, 2006.
 
 % Initialization.
 if (k < 1), error('Number of steps k must be positive'), end
@@ -19,18 +19,16 @@ if (nargout > 1)
    eta = zeros(k,1); rho = eta;
 end
 
-% Replace A with its transpose, for faster execution.
-A = A';
-
 % Prepare for iteration.
 x = zeros(n,1);
-nai2 = full(sum(abs(A.*A),1));
-I = find(nai2>0);
+%nai2 = full(sum(A.*A,2));
+nai2 = full(sum(abs(A.*A),2));
+I = find(nai2>0)';
 
 % Iterate.
 for j=1:k
    for i=I
-      Ai = full(A(:,i))';
+      Ai = full(A(i,:));
       x = x + (b(i)-Ai*x)*Ai'/nai2(i);
    end
    if (nargout > 1)

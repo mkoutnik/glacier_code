@@ -8,20 +8,19 @@ function [reg_min,G,reg_param] = gcv(U,s,b,method)
 %          || A*x - b ||^2
 %    G = -------------------
 %        (trace(I - A*A_I)^2
-% as a function of the regularization parameter reg_param. Here, A_I is a
-% matrix which produces the regularized solution.
+% as a function of the regularization parameter reg_param.
+% Here, A_I is a matrix which produces the regularized solution.
 %
 % The following methods are allowed:
 %    method = 'Tikh' : Tikhonov regularization   (solid line )
 %    method = 'tsvd' : truncated SVD or GSVD     (o markers  )
 %    method = 'dsvd' : damped SVD or GSVD        (dotted line)
-% If method is not specified, 'Tikh' is default.  U and s, or U and sm,
-% must be computed by the functions csvd and cgsvd, respectively.
+% If method is not specified, 'Tikh' is default.
 %
 % If any output arguments are specified, then the minimum of G is
 % identified and the corresponding reg. parameter reg_min is returned.
 
-% Per Christian Hansen, DTU Compute, Dec. 16, 2003.
+% Per Christian Hansen, IMM, Dec. 16, 2003.
 
 % Reference: G. Wahba, "Spline Models for Observational Data",
 % SIAM, 1990.

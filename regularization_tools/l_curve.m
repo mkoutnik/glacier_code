@@ -17,9 +17,8 @@ function [reg_corner,rho,eta,reg_param] = l_curve(U,sm,b,method,L,V)
 % method is specified then 'Tikh' is default.  For other methods use plot_lc.
 %
 % Note that 'Tikh', 'tsvd' and 'dsvd' require either U and s (standard-
-% form regularization) computed by the function csvd, or U and sm (general-
-% form regularization) computed by the function cgsvd, while 'mtvsd'
-% requires U and s as well as L and V computed by the function csvd.
+% form regularization) or U and sm (general-form regularization), while
+% 'mtvsd' requires U and s as well as L and V.
 %
 % If any output arguments are specified, then the corner of the L-curve
 % is identified and the corresponding reg. parameter reg_corner is
@@ -29,7 +28,7 @@ function [reg_corner,rho,eta,reg_param] = l_curve(U,sm,b,method,L,V)
 % the regularization of discrete ill-posed problems",  SIAM J. Sci.
 % Comput. 14 (1993), pp. 1487-1503.
 
-% Per Christian Hansen, DTU Compute, October 27, 2010.
+% Per Christian Hansen, IMM, July 26, 2007.
 
 % Set defaults.
 if (nargin==3), method='Tikh'; end  % Tikhonov reg. is default.
@@ -46,7 +45,6 @@ else
   s = sm(p:-1:1,1)./sm(p:-1:1,2); beta = beta(p:-1:1);
 end
 xi = beta(1:p)./s;
-xi( isinf(xi) ) = 0;
 
 if (strncmp(method,'Tikh',4) | strncmp(method,'tikh',4))
 

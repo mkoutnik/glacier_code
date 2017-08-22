@@ -60,7 +60,7 @@
 % FOR SURFACE CALCULATION
 % -----------------------    
 
- global S_in_global
+% global S_in_global
  global solver_method  
  global theta 
  global beta1  beta2  beta3
@@ -81,7 +81,7 @@
 %                      just iteratively update h(t+1); 1 = yes; 0 = no
 
 
-    S_in_global   = 367;   % surf elev at the mouth of the glacier near grounding line
+ %   S_in_global   = 367;   % surf elev at the mouth of the glacier near grounding line
     
     theta         = 1;         
  

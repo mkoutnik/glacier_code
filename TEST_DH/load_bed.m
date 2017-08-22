@@ -14,6 +14,9 @@ function [ B_P, B_w, B_e, ...
 %---------------------------------------------------------------
 
 global DIRECTORY_data
+global lower_resolution
+
+
 
 addpath(DIRECTORY_data)
 
@@ -30,17 +33,41 @@ addpath(DIRECTORY_data)
 % S_modern = NaN;
 
 
-% Values from QGIS along centerline:
-% ==================================
- load DH_surf_bed.mat   % Used Mette's data, extracted with profile tool in QGIS
+% % Values from QGIS along centerline:
+% % ==================================
+  load DH_surf_bed.mat   % Used Mette's data, extracted with profile tool in QGIS
+  
+ B_P_temp          = interp1(Darwin_centerline_distance, Darwin_bed, x_P);
+ value_to_zero_bed = abs(min(B_P_temp));
+
+% B_P_zero               = B_P_temp + value_to_zero_bed; %use this if you want
+% B_P = B_P_zero;
+
+% if (lower_resolution == 0)
+%   B_P = smooth(B_P_zero, 2)';
+%  else
+%   B_P = smooth(B_P_zero, 1)';
+% end
  
-B_P_temp          = interp1(Darwin_centerline_distance, Darwin_bed, x_P);
-value_to_zero_bed = abs(min(B_P_temp));
-% B_P               = B_P_temp + value_to_zero_bed; %use this if you want
-B_P               = B_P_temp;
-% S_modern = interp1(Darwin_centerline_distance, Darwin_modern_surface, x_P) + value_to_zero_bed; %use  this if you want the lowest elevation to
-% be zero
+
+
+% Or, use actual values (including negatives, should be ok..?)
+B_P               = smooth(B_P_temp,1)';
 S_modern = interp1(Darwin_centerline_distance, Darwin_modern_surface, x_P);
+
+
+
+% figure
+% plot(x_P/1000, B_P, 'r')
+% hold on
+% plot(Darwin_centerline_distance/1000,Darwin_bed,'k')
+% plot(x_P/1000, S_modern)
+% plot(Darwin_centerline_distance/1000, Darwin_modern_surface,'k')
+
+
+
+% S_modern = interp1(Darwin_centerline_distance, Darwin_modern_surface, x_P) + value_to_zero_bed; %use  this if you want the lowest elevation to be zero
+% % S_modern = interp1(Darwin_centerline_distance, Darwin_modern_surface, x_P);
 % figure
 % plot(x_P/1000, B_P, 'r')
 % hold on

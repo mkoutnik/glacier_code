@@ -1,5 +1,5 @@
 function [U,sm,X,V,W] = cgsvd(A,L)
-%CGSVD Compact generalized SVD (GSVD) of a matrix pair in regularization problems.
+%CGSVD Compact generalized SVD of a matrix pair in regularization problems.
 %
 % sm = cgsvd(A,L)
 % [U,sm,X,V] = cgsvd(A,L) ,  sm = [sigma,mu]
@@ -24,7 +24,7 @@ function [U,sm,X,V,W] = cgsvd(A,L)
 % Reference: C. F. Van Loan, "Computing the CS and the generalized 
 % singular value decomposition", Numer. Math. 46 (1985), 479-491. 
  
-% Per Christian Hansen, DTU Compute, August 22, 2009. 
+% Per Christian Hansen, IMM, March 17, 2008. 
  
 % Initialization.
 [m,n] = size(A); [p,n1] = size(L);
@@ -40,9 +40,7 @@ end
 
 if (m >= n)
   % The overdetermined or square case.
-  %sm = [diag(C(1:p,1:p)),diag(S(1:p,1:p))];
-  q = min(p,n);
-  sm = [diag(C(1:q,1:q)),diag(S(1:q,1:q))];
+  sm = [diag(C(1:p,1:p)),diag(S(1:p,1:p))]; 
   if (nargout < 2) 
     U = sm; 
   else 

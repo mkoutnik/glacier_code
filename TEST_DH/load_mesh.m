@@ -21,20 +21,20 @@ function [ x_P, x_w, x_e,    ...
 %---------------------------------------------------------------
 
 
-global min_search_E min_search_fs min_search_bed
+global min_search_E min_search_fs min_search_bed min_search_E_and_fs
 global lower_resolution
 
 
 
-if ( (lower_resolution == 1) || (min_search_E == 1) || (min_search_bed == 1) || (min_search_fs == 1) )
+if ( (lower_resolution == 1) || (min_search_E == 1) || (min_search_bed == 1) || (min_search_fs == 1) || (min_search_E_and_fs == 1) )
     
     N_t = 201;
-    N_x = 67;
+    N_x = 71;
     
 else
     
     N_t = 201;
-    N_x = 567; 
+    N_x = 142; % 283; % 142; 
     
 end
     

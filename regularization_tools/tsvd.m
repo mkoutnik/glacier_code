@@ -7,11 +7,10 @@ function [x_k,rho,eta] = tsvd(U,s,V,b,k)
 %    x_k = V(:,1:k)*inv(diag(s(1:k)))*U(:,1:k)'*b .
 % If k is a vector, then x_k is a matrix such that
 %    x_k = [ x_k(1), x_k(2), ... ] .
-% U, s, and V must be computed by the csvd function.
 %
 % The solution and residual norms are returned in eta and rho.
 
-% Per Christian Hansen, DTU Compute, 12/21/97.
+% Per Christian Hansen, IMM, 12/21/97.
 
 % Initialization.
 [n,p] = size(V); lk = length(k);
