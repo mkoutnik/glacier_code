@@ -35,7 +35,13 @@ Hat_bdot_modern_lapse = precip_at_sl + lapse.*Hat_modern_surface;
 
 b_dot_use = interp1(Hat_centerline_distance, Hat_bdot_modern_lapse, x_nodes);
 
-% % b_dot_use = interp1(Hat_accumulation_A_centerline_distance, Hat_accumulation_A, x_nodes);
+% b_dot_use_modern = interp1(Hat_centerline_distance, Hat_bdot_modern_lapse, x_nodes);
+% b_dot_use_LGM = interp1(Hat_accumulation_centerline_distance,Hat_accumulation_LGM, x_nodes);
+% 
+% b_dot_use = interp2(x_nodes, [t_nodes(1);t_nodes(end)], [b_dot_use_LGM; b_dot_use_modern], x_nodes, t_nodes);
+
+
+ % b_dot_use = interp1(Hat_accumulation_A_centerline_distance, Hat_accumulation_A, x_nodes);
 % b_dot_use = -interp1(Hat_accumulation_centerline_distance, Hat_accumulation_A, x_nodes);
  
 
@@ -55,7 +61,7 @@ b_dot_use = interp1(Hat_centerline_distance, Hat_bdot_modern_lapse, x_nodes);
   for ii = 1:N_t_nodes2
     b_dot_nodes(ii,:) = b_dot_use;
   end
-
+% b_dot_nodes = b_dot_use;
   
 
 % % Constant in time

@@ -1,5 +1,6 @@
 % extract boundary conditions needed from different minimization runs
 
+%test comment
 
 for ii = 1:8
     
